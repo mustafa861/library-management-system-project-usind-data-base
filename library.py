@@ -135,17 +135,76 @@ class LibraryManagement:
 if __name__ == "__main__":
     lib = LibraryManagement()
     
-    # Add some books
-    lib.add_book("Python Programming", "John Smith", "ISBN123", 5)
-    lib.add_book("Data Structures", "Jane Doe", "ISBN456", 3)
-    
-    # Add a member
-    lib.add_member("Alice Brown", "alice@email.com", "1234567890")
-    
-    # Search for books
-    results = lib.search_books("Python")
-    for book in results:
-        print(book)
-    
-    # Close the connection
-    lib.close()
+    while True:
+        print("\n=== Library Management System ===")
+        print("1. Add Book")
+        print("2. Add Member")
+        print("3. Search Books")
+        print("4. Issue Book")
+        print("5. Return Book")
+        print("6. View Member's Books")
+        print("7. Exit")
+        
+        choice = input("\nEnter your choice (1-7): ")
+        
+        if choice == '1':
+            title = input("Enter book title: ")
+            author = input("Enter author name: ")
+            isbn = input("Enter ISBN: ")
+            quantity = int(input("Enter quantity: "))
+            if lib.add_book(title, author, isbn, quantity):
+                print("Book added successfully!")
+            else:
+                print("Failed to add book. ISBN might be duplicate.")
+                
+        elif choice == '2':
+            name = input("Enter member name: ")
+            email = input("Enter email: ")
+            phone = input("Enter phone: ")
+            if lib.add_member(name, email, phone):
+                print("Member added successfully!")
+            else:
+                print("Failed to add member. Email might be duplicate.")
+                
+        elif choice == '3':
+            keyword = input("Enter search keyword: ")
+            results = lib.search_books(keyword)
+            if results:
+                for book in results:
+                    print(f"ID: {book[0]}, Title: {book[1]}, Author: {book[2]}, ISBN: {book[3]}, Quantity: {book[4]}, Available: {book[5]}")
+            else:
+                print("No books found.")
+                
+        elif choice == '4':
+            book_id = int(input("Enter book ID: "))
+            member_id = int(input("Enter member ID: "))
+            if lib.issue_book(book_id, member_id):
+                print("Book issued successfully!")
+            else:
+                print("Failed to issue book. Check availability and IDs.")
+                
+        elif choice == '5':
+            book_id = int(input("Enter book ID: "))
+            member_id = int(input("Enter member ID: "))
+            if lib.return_book(book_id, member_id):
+                print("Book returned successfully!")
+            else:
+                print("Failed to return book. Check IDs and if book was issued.")
+                
+        elif choice == '6':
+            member_id = int(input("Enter member ID: "))
+            books = lib.get_member_books(member_id)
+            if books:
+                for book in books:
+                    print(f"Title: {book[0]}, Issue Date: {book[1]}, Return Date: {book[2]}")
+            else:
+                print("No books currently borrowed by this member.")
+                
+        elif choice == '7':
+            print("Thank you for using the Library Management System!")
+            lib.close()
+            break
+            
+        else:
+            print("Invalid choice! Please try again.")
+ 
